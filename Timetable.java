@@ -1,4 +1,4 @@
-import java.sql.*;
+//import java.sql.*;
 import java.util.*;
 public class Timetable {
     public static void main(String args[]){
@@ -67,9 +67,9 @@ public class Timetable {
         
         Random random = new Random();
         int randomIndex = random.nextInt(array.length);
-        return array[randomIndex];*/
+        return array[randomIndex];
         Scanner s=new Scanner(System.in);
-        /*String jdbcDriver = "jdbc:mysql://localhost:3306/timetable";
+        String jdbcDriver = "jdbc:mysql://localhost:3306/timetable";
         String user = "user";
         String pass = "pass123";
         try (Connection con = DriverManager.getConnection(jdbcDriver, user,pass))
@@ -79,12 +79,11 @@ public class Timetable {
         catch(Exception e){
             e.printStackTrace(null);
         }*/
-        ArrayList<String> faculty=new ArrayList<>(null);
-        ArrayList<String> courses=new ArrayList<>(null);
-        HashMap<Integer,Integer[]> periods=new HashMap<>(null);
+        ArrayList<String> faculty=new ArrayList<>();
+        ArrayList<String> courses=new ArrayList<>();
+        HashMap<Integer,Integer[]> periods=new HashMap<>();
         ArrayList<String> lab=new ArrayList<>();
         ArrayList<Integer> lab_days=new ArrayList<>();
-        ArrayList<Integer> credit4_days=new ArrayList<>();
         int max_lecs_per_day=7;
         int max_days_per_week=5;
         int curr_lecs_per_day=7;
@@ -141,12 +140,13 @@ public class Timetable {
         course_total.put("UHV",null);
         course_total.put("LIB",null);
         course_total.put("TECH",null);
-
+        System.out.println("!");
         //randomly assign two periods for product development lab
         ran_day=randomMaker(1, max_days_per_week);
         ran_lec1=randomMaker(1, max_lecs_per_day-1);
         ran_lec2=ran_lec1+1;
         lab_days.add(ran_day);
+        System.out.println(ran_day+" "+ran_lec1+" "+ran_lec2);
         switch(ran_day){
             case 1:{
                 day1[ran_lec1-1]="PDL";
@@ -159,9 +159,9 @@ public class Timetable {
                 break;
             }   
             case 2:{
-                day1[ran_lec1-1]="PDL";
-                day1[ran_lec2-1]="PDL";
-                tt.replace(2,day1);
+                day2[ran_lec1-1]="PDL";
+                day2[ran_lec2-1]="PDL";
+                tt.replace(2,day2);
                 Integer[] arr=periods.get(2);
                 arr[ran_lec1-1]=ran_lec1;
                 arr[ran_lec2-1]=ran_lec2;
@@ -169,9 +169,9 @@ public class Timetable {
                 break;
             }
             case 3:{
-                day1[ran_lec1-1]="PDL";
-                day1[ran_lec2-1]="PDL";
-                tt.replace(3,day1);
+                day3[ran_lec1-1]="PDL";
+                day3[ran_lec2-1]="PDL";
+                tt.replace(3,day3);
                 Integer[] arr=periods.get(3);
                 arr[ran_lec1-1]=ran_lec1;
                 arr[ran_lec2-1]=ran_lec2;
@@ -179,9 +179,9 @@ public class Timetable {
                 break;
             }
             case 4:{
-                day1[ran_lec1-1]="PDL";
-                day1[ran_lec2-1]="PDL";
-                tt.replace(4,day1);
+                day4[ran_lec1-1]="PDL";
+                day4[ran_lec2-1]="PDL";
+                tt.replace(4,day4);
                 Integer[] arr=periods.get(4);
                 arr[ran_lec1-1]=ran_lec1;
                 arr[ran_lec2-1]=ran_lec2;
@@ -189,9 +189,9 @@ public class Timetable {
                 break;
             }
             case 5:{
-                day1[ran_lec1-1]="PDL";
-                day1[ran_lec2-1]="PDL";
-                tt.replace(5,day1);
+                day5[ran_lec1-1]="PDL";
+                day5[ran_lec2-1]="PDL";
+                tt.replace(5,day5);
                 Integer[] arr=periods.get(5);
                 arr[ran_lec1-1]=ran_lec1;
                 arr[ran_lec2-1]=ran_lec2;
@@ -204,90 +204,84 @@ public class Timetable {
         }
 
         //assign lab periods
-        for(int i=0;i<4;i++){
-            String temp_lab=lab.get(randomMaker(0,4));
-            while(labs.get(temp_lab)==null){
-                ran_day=randomMaker(1, max_days_per_week);
-                if(lab_days.contains(ran_day)){
-                    continue;
-                }
-                ran_lec1=randomMaker(1, max_lecs_per_day-1);
-                ran_lec2=ran_lec1+1;
-                Integer[] arr=periods.get(ran_day);
-                if(arr[ran_lec1-1]!=null && arr[ran_lec2-1]!=null){
-                    continue;
-                }
-                switch(ran_day){
-                    case 1:{
-                        day1[ran_lec1-1]=temp_lab;
-                        day1[ran_lec2-1]=temp_lab;
-                        tt.replace(1,day1);
-                        arr[ran_lec1-1]=ran_lec1;
-                        arr[ran_lec2-1]=ran_lec2;
-                        periods.replace(ran_day,arr);
-                        break;
-                    }
-                    case 2:{
-                        day2[ran_lec1-1]=temp_lab;
-                        day2[ran_lec2-1]=temp_lab;
-                        tt.replace(2,day2);
-                        arr[ran_lec1-1]=ran_lec1;
-                        arr[ran_lec2-1]=ran_lec2;
-                        periods.replace(ran_day,arr);
-                        break;
-                    }
-                    case 3:{
-                        day1[ran_lec1-1]=temp_lab;
-                        day1[ran_lec2-1]=temp_lab;
-                        tt.replace(3,day3);
-                        arr[ran_lec1-1]=ran_lec1;
-                        arr[ran_lec2-1]=ran_lec2;
-                        periods.replace(ran_day,arr);
-                        break;
-                    }
-                    case 4:{
-                        day1[ran_lec1-1]=temp_lab;
-                        day1[ran_lec2-1]=temp_lab;
-                        tt.replace(4,day4);
-                        arr[ran_lec1-1]=ran_lec1;
-                        arr[ran_lec2-1]=ran_lec2;
-                        periods.replace(ran_day,arr);
-                        break;
-                    }
-                    case 5:{
-                        day1[ran_lec1-1]=temp_lab;
-                        day1[ran_lec2-1]=temp_lab;
-                        tt.replace(5,day5);
-                        arr[ran_lec1-1]=ran_lec1;
-                        arr[ran_lec2-1]=ran_lec2;
-                        periods.replace(ran_day,arr);
-                        break;
-                    }
-                    default:
-                    System.out.println("Error! Program terminated");
-                    System.exit(0);
-                }
-            }
-        }
 
-
-        //assigning normal classes
-
-        //assigning for 4 credit courses
-
-        /*for(int i=1;i<=5;i++){
+        while(lab_days.size()!=5){
             ran_day=randomMaker(1, max_days_per_week);
-            if(!credit4_days.contains(ran_day)){
-                credit4_days.add(ran_day);
-                //under construction
+            String temp=lab.get(randomMaker(0,lab.size()-1));
+            if(lab_days.contains(ran_day)){
+                continue;
             }
-        }*/
-
-        for (Map.Entry<String, String> entry : tt.entrySet()) {
-            String key = entry.getKey();
-            String value = entry.getValue();
-            System.out.println("Key=" + key + ", Value=" + value);
+            lab_days.add(ran_day);
+            labs.replace(temp,ran_day);
+            ran_lec1=randomMaker(1, max_lecs_per_day-1);
+            ran_lec2=ran_lec1+1;
+            lab.remove(temp);
+            switch(ran_day){
+                case 1:{
+                    day1[ran_lec1-1]=temp;
+                    day1[ran_lec2-1]=temp;
+                    tt.replace(1,day1);
+                    Integer[] arr=periods.get(1);
+                    arr[ran_lec1-1]=ran_lec1;
+                    arr[ran_lec2-1]=ran_lec2;
+                    periods.replace(1,arr);
+                    break;
+                }   
+                case 2:{
+                    day2[ran_lec1-1]=temp;
+                    day2[ran_lec2-1]=temp;
+                    tt.replace(2,day2);
+                    Integer[] arr=periods.get(2);
+                    arr[ran_lec1-1]=ran_lec1;
+                    arr[ran_lec2-1]=ran_lec2;
+                    periods.replace(2,arr);
+                    break;
+                }
+                case 3:{
+                    day3[ran_lec1-1]=temp;
+                    day3[ran_lec2-1]=temp;
+                    tt.replace(3,day3);
+                    Integer[] arr=periods.get(3);
+                    arr[ran_lec1-1]=ran_lec1;
+                    arr[ran_lec2-1]=ran_lec2;
+                    periods.replace(3,arr);
+                    break;
+                }
+                case 4:{
+                    day4[ran_lec1-1]=temp;
+                    day4[ran_lec2-1]=temp;
+                    tt.replace(4,day4);
+                    Integer[] arr=periods.get(4);
+                    arr[ran_lec1-1]=ran_lec1;
+                    arr[ran_lec2-1]=ran_lec2;
+                    periods.replace(4,arr);
+                    break;
+                }
+                case 5:{
+                    day5[ran_lec1-1]=temp;
+                    day5[ran_lec2-1]=temp;
+                    tt.replace(5,day5);
+                    Integer[] arr=periods.get(5);
+                    arr[ran_lec1-1]=ran_lec1;
+                    arr[ran_lec2-1]=ran_lec2;
+                    periods.replace(5,arr);
+                    break;
+                }
+                default:
+                System.out.println("Error! Program terminated");
+                System.exit(0);
+            }
+            
         }
+
+        for(int i=1;i<=5;i++){
+            String[] t=tt.get(i);
+            for(int j=0;j<7;j++){
+                System.out.print(t[j]+"\t");
+            }
+            System.out.println();
+        }
+
     }
     public static int randomMaker(int min,int max){
         Random random = new Random();
