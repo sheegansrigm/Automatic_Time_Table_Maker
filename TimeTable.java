@@ -171,9 +171,7 @@ public class TimeTable {
         }
         z++;
         num++;
-        if(num==5) {
-        	break;
-        }
+        
         }
         for (int k = 1; k <= 5; k++) {
             String[] t = tt.get(k);
