@@ -1,0 +1,138 @@
+package timetable;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Random;
+import java.util.Scanner;
+
+public class Sample {
+    public static void main(String[] args) {
+        String day1[] = new String[7];
+        String day2[] = new String[7];
+        String day3[] = new String[7];
+        String day4[] = new String[7];
+        String day5[] = new String[7];
+        int max_lecs_per_day = 7;
+        int max_days_per_week = 5;
+        int ran_lec1 = 0, ran_lec2 = 0;
+        HashMap<Integer, Integer[]> periods = new HashMap<>(5);
+        ArrayList<Integer> lab_days = new ArrayList<>();
+
+        periods.put(1, new Integer[7]);
+        periods.put(2, new Integer[7]);
+        periods.put(3, new Integer[7]);
+        periods.put(4, new Integer[7]);
+        periods.put(5, new Integer[7]);
+        Scanner sc = new Scanner(System.in);
+        HashMap<Integer, String[]> timeTable = new HashMap<Integer, String[]>();
+        System.out.print("Enter the number of subjects: ");
+        int numOfSubjects = sc.nextInt();
+        sc.nextLine();
+
+        ArrayList<String> subjects = new ArrayList<>();
+        for (int i = 0; i < numOfSubjects; i++) {
+            System.out.print("Enter subject " + (i + 1) + ": ");
+            String subject = sc.nextLine();
+            subjects.add(subject);
+        }
+        HashMap<String, String> labSubjects = new HashMap<>();
+        HashMap<String, String> subjectRepeats = new HashMap<>();
+        for (String subject : subjects) {
+            System.out.print("Enter the number of times " + subject + " should repeat: ");
+            int repeats = sc.nextInt();
+            String repeat = String.format("%d", repeats);
+            subjectRepeats.put(subject, repeat);
+            System.out.print("Do " + subject + " is a lab integrated course(yes/no): ");
+            sc.nextLine();
+            if (sc.nextLine().equalsIgnoreCase("yes")) {
+                labSubjects.put(subject, null);
+            }
+        }
+        System.out.println(labSubjects);
+        System.out.println(subjectRepeats);
+        while (lab_days.size() != 5) {
+            int ran_day = randomMaker(1, max_days_per_week);
+            if (lab_days.contains(ran_day)) {
+                continue;
+            }
+            lab_days.add(ran_day);
+            String temp_lab = labSubjects.get(randomMaker(0, labSubjects.size() - 1));
+            ran_lec1 = randomMaker(1, max_lecs_per_day - 1);
+            ran_lec2 = ran_lec1 + 1;
+            switch (ran_day) {
+                case 1: {
+                    day1[ran_lec1 - 1] = temp_lab;
+                    day1[ran_lec2 - 1] = temp_lab;
+                    timeTable.put(1, day1);
+                    Integer[] arr = periods.get(1);
+                    arr[ran_lec1 - 1] = ran_lec1;
+                    arr[ran_lec2 - 1] = ran_lec2;
+                    periods.put(1, arr);
+                    break;
+                }
+                case 2: {
+                    day2[ran_lec1 - 1] = temp_lab;
+                    day2[ran_lec2 - 1] = temp_lab;
+                    timeTable.put(2, day2);
+                    Integer[] arr = periods.get(2);
+                    arr[ran_lec1 - 1] = ran_lec1;
+                    arr[ran_lec2 - 1] = ran_lec2;
+                    periods.put(2, arr);
+                    break;
+                }
+                case 3: {
+                    day3[ran_lec1 - 1] = temp_lab;
+                    day3[ran_lec2 - 1] = temp_lab;
+                    timeTable.put(3, day3);
+                    Integer[] arr = periods.get(3);
+                    arr[ran_lec1 - 1] = ran_lec1;
+                    arr[ran_lec2 - 1] = ran_lec2;
+                    periods.put(3, arr);
+                    break;
+                }
+                case 4: {
+                    day4[ran_lec1 - 1] = temp_lab;
+                    day4[ran_lec2 - 1] = temp_lab;
+                    timeTable.put(4, day4);
+                    Integer[] arr = periods.get(4);
+                    arr[ran_lec1 - 1] = ran_lec1;
+                    arr[ran_lec2 - 1] = ran_lec2;
+                    periods.put(4, arr);
+                    break;
+                }
+                case 5: {
+                    day5[ran_lec1 - 1] = temp_lab;
+                    day5[ran_lec2 - 1] = temp_lab;
+                    timeTable.put(5, day5);
+                    Integer[] arr = periods.get(5);
+                    arr[ran_lec1 - 1] = ran_lec1;
+                    arr[ran_lec2 - 1] = ran_lec2;
+                    periods.put(5, arr);
+                    break;
+                }
+                default:
+                    System.out.println("Error! Program terminated");
+                    System.exit(0);
+            }
+
+        }
+
+        for (int i = 1; i <= 5; i++) {
+            String[] t = timeTable.get(i);
+            for (int j = 0; j < 7; j++) {
+                System.out.print(t[j] + "\t");
+            }
+            System.out.println();
+        }
+        System.out.println(labSubjects);
+        System.out.println(timeTable);
+
+    }
+
+    public static int randomMaker(int min, int max) {
+        Random random = new Random();
+        int range = max - min + 1;
+        int randomNumber = random.nextInt(range) + min;
+        return randomNumber;
+    }
+}
