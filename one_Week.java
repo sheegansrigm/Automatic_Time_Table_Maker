@@ -2,7 +2,7 @@ package timetable;
 
 import java.util.*;
 
-public class one_Week {
+public class TimeTable {
     public static void main(String args[]) {
         Scanner sc = new Scanner(System.in);
         ArrayList<String> courses = new ArrayList<>();
@@ -171,9 +171,7 @@ public class one_Week {
         }
         z++;
         num++;
-        if(num==5) {
-        	break;
-        }
+        
         }
         for (int k = 1; k <= 5; k++) {
             String[] t = tt.get(k);
