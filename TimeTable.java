@@ -1,11 +1,49 @@
-package timetable;
-
 import java.util.*;
 
+class FacultyExtraction {
+    public HashMap<Integer,String[]>  displayFacultyTimeTable(HashMap<Integer,String[]> tt,String subName) {
+    	HashMap<Integer,String[]> facultyTT = new HashMap<Integer,String[]>();
+    	for(int i=1;i<=5;i++) {
+    		String t[] = tt.get(i);
+    		String f[] = new String[7];
+    		for(int j=0;j<7;j++) {
+    			if(t[j].equalsIgnoreCase(subName)) {
+    				System.out.print(t[j]+"\t");
+    				f[j]=t[j];
+    			}
+    			else {
+    				System.out.print("free\t");
+    				f[j]="free";
+    			}
+    		}
+    		facultyTT.put(i, f);
+    		System.out.println();
+    	}
+		return facultyTT;
+    }
+}
+
+
+class Course {
+    String name;
+    String faculty;
+
+    public Course(String name, String faculty) {
+        this.name = name;
+        this.faculty = faculty;
+    }
+    String getFaculty() {
+    	return faculty;
+    }
+    String getName() {
+    	return name;
+    }
+}
+
 public class TimeTable {
-    public static void main(String args[]) {
+	public static void main(String args[]) {
         Scanner sc = new Scanner(System.in);
-        ArrayList<String> courses = new ArrayList<>();
+        ArrayList<Course> courses = new ArrayList<>();
         HashMap<Integer, Integer[]> periods = new HashMap<>();
         ArrayList<String> lab = new ArrayList<>();
         ArrayList<Integer> lab_days = new ArrayList<>();
@@ -27,22 +65,24 @@ public class TimeTable {
         for (int i = 0; i < numOfSubjects; i++) {
             System.out.print("Enter subject " + (i + 1) + ": ");
             String subject = sc.nextLine();
-            courses.add(subject);
+            System.out.print("Enter Faculty Name for "+subject+" : ");
+            String faculty = sc.nextLine();
+            courses.add(new Course(subject,faculty));
         }
 
         HashMap<String, Integer> subjectRepeats = new HashMap<>();
 
-        for (String subject : courses) {
-            System.out.print("Enter the number of times " + subject + " should repeat: ");
+        for (Course subject : courses) {
+            System.out.print("Enter the number of times " + subject.getName() + " should repeat: ");
             int repeats = sc.nextInt();
             sc.nextLine();
-            subjectRepeats.put(subject, repeats);
+            subjectRepeats.put(subject.getName(), repeats);
 
-            System.out.print("Do " + subject + " is a lab integrated course (yes/no): ");
+            System.out.print("Do " + subject.getName() + " is a lab integrated course (yes/no): ");
             String response = sc.nextLine();
             if (response.equalsIgnoreCase("yes")) {
-                labs.put(subject, null);
-                lab.add(subject);
+                labs.put(subject.getName(), null);
+                lab.add(subject.getName());
             }
         }
 
@@ -135,8 +175,7 @@ public class TimeTable {
         int z=1;
         int num = 0;
         while( z <= courses.size()) {
-        int ranSubnum = randomMaker(0, numOfSubjects - 1);
-        String ranSub = courses.get(num);
+        String ranSub = (courses.get(num)).getName();
         int i =1;
         while ( subjectRepeats.get(ranSub)!=0) {
             String[] perDay = tt.get(i);
@@ -180,11 +219,16 @@ public class TimeTable {
             }
             System.out.println();
         }    
+        System.out.print("Enter the faculty name: ");
+        String facName = sc.nextLine();
+        FacultyExtraction fe = new FacultyExtraction();
+        System.out.println(fe.displayFacultyTimeTable(tt, facName));
     }
     public static int randomMaker(int min, int max) {
-        Random random = new Random();
-        int range = max - min + 1;
-        int randomNumber = random.nextInt(range) + min;
-        return randomNumber;
+    	Random random = new Random();
+	    int range = max - min + 1;
+	    int randomNumber = random.nextInt(range) + min;
+	    return randomNumber;
     }
 }
+
