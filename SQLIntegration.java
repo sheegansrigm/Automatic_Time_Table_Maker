@@ -1,33 +1,32 @@
 import java.util.*;
 import java.sql.*;
 public class SQLIntegration {
-        public static ArrayList<String> courses = new ArrayList<>();
-        public static HashMap<Integer, Integer[]> periods = new HashMap<>();
-        public static ArrayList<String> lab = new ArrayList<>();
-        public static ArrayList<Integer> lab_days = new ArrayList<>();
-        public static HashMap<String, Integer> subjectRepeats = new HashMap<>();
-        public static int max_lecs_per_day = 7;
-        public static int max_days_per_week = 5;
-        public static int ran_day = 0, ran_lec1 = 0, ran_lec2 = 0;
-        public static HashMap<Integer, String[]> tt = new HashMap<>();
-        public static HashMap<String, Integer> labs = new HashMap<>();
-        public static String[] day1 = new String[7];
-        public static String[] day2 = new String[7];
-        public static String[] day3 = new String[7];
-        public static String[] day4 = new String[7];
-        public static String[] day5 = new String[7];
-    public static void main(String args[]){
+    public static ArrayList<String> courses = new ArrayList<>();
+    public static HashMap<Integer, Integer[]> periods = new HashMap<>();
+    public static ArrayList<String> lab = new ArrayList<>();
+    public static ArrayList<Integer> lab_days = new ArrayList<>();
+    public static HashMap<String, Integer> subjectRepeats = new HashMap<>();
+    public static int max_lecs_per_day = 7;
+    public static int max_days_per_week = 5;
+    public static int ran_day = 0, ran_lec1 = 0, ran_lec2 = 0;
+    public static HashMap<Integer, String[]> tt = new HashMap<>();
+    public static HashMap<String, Integer> labs = new HashMap<>();
+    public static String[] day1 = new String[7];
+    public static String[] day2 = new String[7];
+    public static String[] day3 = new String[7];
+    public static String[] day4 = new String[7];
+    public static String[] day5 = new String[7];
+    public static void main(String args[]) {
         Scanner s=new Scanner(System.in);
         String jdbcDriver = "jdbc:mysql://localhost:3306/timetable";
         String user = "user";
         String pass = "pass123";
-        try (Connection con = DriverManager.getConnection(jdbcDriver, user,pass))
-        {
+        try (Connection con = DriverManager.getConnection(jdbcDriver, user,pass)) {
             String tableName="COURSES";
             System.out.println("How many courses?");
             String num=s.nextLine();
             int n=Integer.parseInt(num);
-            for(int i=1;i<=n;i++){
+            for(int i=1; i<=n; i++) {
                 String sql = "INSERT INTO " + tableName + " (course,lab,frequency) VALUES (?,?,?)";
                 PreparedStatement stmt = con.prepareStatement(sql);
                 String course_name=s.nextLine();
@@ -46,8 +45,7 @@ public class SQLIntegration {
                     stmt.setString(1,course_name);
                     stmt.setString(2,lab_period);
                     stmt.executeUpdate();
-                }
-                else{
+                } else {
                     lab_period="no";
                     stmt.setInt(3,frequency);
                     stmt.setString(1,course_name);
@@ -55,8 +53,7 @@ public class SQLIntegration {
                     stmt.executeUpdate();
                 }
             }
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         lab_allotment();
@@ -65,7 +62,7 @@ public class SQLIntegration {
         s.close();
     }
     //allotting lab lectures
-    public static void lab_allotment(){
+    public static void lab_allotment() {
         int labsize = SQLIntegration.lab.size();
         SQLIntegration.tt.put(1, day1);
         SQLIntegration.tt.put(2, day2);
@@ -89,65 +86,65 @@ public class SQLIntegration {
             ran_lec2 = ran_lec1 + 1;
             SQLIntegration.lab.remove(temp);
             switch (ran_day) {
-                case 1: {
-                    SQLIntegration.day1[ran_lec1 - 1] = temp;
-                    SQLIntegration.day1[ran_lec2 - 1] = temp;
-                    SQLIntegration.tt.replace(1, day1);
-                    Integer[] arr = periods.get(1);
-                    arr[ran_lec1 - 1] = ran_lec1;
-                    arr[ran_lec2 - 1] = ran_lec2;
-                    SQLIntegration.periods.replace(1, arr);
-                    break;
-                }
-                case 2: {
-                    SQLIntegration.day2[ran_lec1 - 1] = temp;
-                    SQLIntegration.day2[ran_lec2 - 1] = temp;
-                    SQLIntegration.tt.replace(2, day2);
-                    Integer[] arr = periods.get(2);
-                    arr[ran_lec1 - 1] = ran_lec1;
-                    arr[ran_lec2 - 1] = ran_lec2;
-                    SQLIntegration.periods.replace(2, arr);
-                    break;
-                }
-                case 3: {
-                    SQLIntegration.day3[ran_lec1 - 1] = temp;
-                    SQLIntegration.day3[ran_lec2 - 1] = temp;
-                    SQLIntegration.tt.replace(3, day3);
-                    Integer[] arr = periods.get(3);
-                    arr[ran_lec1 - 1] = ran_lec1;
-                    arr[ran_lec2 - 1] = ran_lec2;
-                    SQLIntegration.periods.replace(3, arr);
-                    break;
-                }
-                case 4: {
-                    SQLIntegration.day4[ran_lec1 - 1] = temp;
-                    SQLIntegration.day4[ran_lec2 - 1] = temp;
-                    SQLIntegration.tt.replace(4, day4);
-                    Integer[] arr = periods.get(4);
-                    arr[ran_lec1 - 1] = ran_lec1;
-                    arr[ran_lec2 - 1] = ran_lec2;
-                    SQLIntegration.periods.replace(4, arr);
-                    break;
-                }
-                case 5: {
-                    SQLIntegration.day5[ran_lec1 - 1] = temp;
-                    SQLIntegration.day5[ran_lec2 - 1] = temp;
-                    SQLIntegration.tt.replace(5, day5);
-                    Integer[] arr = periods.get(5);
-                    arr[ran_lec1 - 1] = ran_lec1;
-                    arr[ran_lec2 - 1] = ran_lec2;
-                    SQLIntegration.periods.replace(5, arr);
-                    break;
-                }
-                default:
-                    System.out.println("Error! Program terminated");
-                    System.exit(0);
+            case 1: {
+                SQLIntegration.day1[ran_lec1 - 1] = temp;
+                SQLIntegration.day1[ran_lec2 - 1] = temp;
+                SQLIntegration.tt.replace(1, day1);
+                Integer[] arr = periods.get(1);
+                arr[ran_lec1 - 1] = ran_lec1;
+                arr[ran_lec2 - 1] = ran_lec2;
+                SQLIntegration.periods.replace(1, arr);
+                break;
+            }
+            case 2: {
+                SQLIntegration.day2[ran_lec1 - 1] = temp;
+                SQLIntegration.day2[ran_lec2 - 1] = temp;
+                SQLIntegration.tt.replace(2, day2);
+                Integer[] arr = periods.get(2);
+                arr[ran_lec1 - 1] = ran_lec1;
+                arr[ran_lec2 - 1] = ran_lec2;
+                SQLIntegration.periods.replace(2, arr);
+                break;
+            }
+            case 3: {
+                SQLIntegration.day3[ran_lec1 - 1] = temp;
+                SQLIntegration.day3[ran_lec2 - 1] = temp;
+                SQLIntegration.tt.replace(3, day3);
+                Integer[] arr = periods.get(3);
+                arr[ran_lec1 - 1] = ran_lec1;
+                arr[ran_lec2 - 1] = ran_lec2;
+                SQLIntegration.periods.replace(3, arr);
+                break;
+            }
+            case 4: {
+                SQLIntegration.day4[ran_lec1 - 1] = temp;
+                SQLIntegration.day4[ran_lec2 - 1] = temp;
+                SQLIntegration.tt.replace(4, day4);
+                Integer[] arr = periods.get(4);
+                arr[ran_lec1 - 1] = ran_lec1;
+                arr[ran_lec2 - 1] = ran_lec2;
+                SQLIntegration.periods.replace(4, arr);
+                break;
+            }
+            case 5: {
+                SQLIntegration.day5[ran_lec1 - 1] = temp;
+                SQLIntegration.day5[ran_lec2 - 1] = temp;
+                SQLIntegration.tt.replace(5, day5);
+                Integer[] arr = periods.get(5);
+                arr[ran_lec1 - 1] = ran_lec1;
+                arr[ran_lec2 - 1] = ran_lec2;
+                SQLIntegration.periods.replace(5, arr);
+                break;
+            }
+            default:
+                System.out.println("Error! Program terminated");
+                System.exit(0);
             }
         }
         System.out.println("Lab allotment done");
     }
     //allotting non_lab lectures
-    public static void non_lab_allotment(){
+    public static void non_lab_allotment() {
         int z=1;
         int num = 0;
         while( z <= courses.size()) {
@@ -179,8 +176,7 @@ public class SQLIntegration {
                 }
                 if(i<5) {
                     i++;
-                }
-                else if(i>=5) {
+                } else if(i>=5) {
                     i=1;
                 }
             }
@@ -190,12 +186,11 @@ public class SQLIntegration {
         System.out.println("Non Lab allotment done");
     }
     //creating the table and storing the timetable
-    public static void tt_maker(){
+    public static void tt_maker() {
         String jdbcDriver = "jdbc:mysql://localhost:3306/timetable";
         String user = "user";
         String pass = "pass123";
-        try (Connection con = DriverManager.getConnection(jdbcDriver, user,pass))
-        {
+        try (Connection con = DriverManager.getConnection(jdbcDriver, user,pass)) {
             Statement create=con.createStatement();
             String create_cmd="CREATE TABLE CSBS_TT(day varchar(20),lec1 varchar(20),lec2 varchar(20),lec3 varchar(20),lec4 varchar(20),lec5 varchar(20),lec6 varchar(20),lec7 varchar(20))";
             create.executeUpdate(create_cmd);
@@ -209,8 +204,7 @@ public class SQLIntegration {
                 }
                 stmt.executeUpdate();
             }
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         for (int k = 1; k <= 5; k++) {
