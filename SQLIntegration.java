@@ -1,3 +1,4 @@
+//single class tt using jdbc
 import java.util.*;
 import java.sql.*;
 public class SQLIntegration {
